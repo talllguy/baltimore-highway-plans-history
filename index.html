@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset=utf-8 />
+      <title>Baltimore Highway History</title>
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+      <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+      <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+      <style>
+         body { margin:0; padding:0; }
+         #map { position:absolute; top:0; bottom:0; width:100%; }
+      </style>
+   </head>
+   <body>
+      <div id='map'></div>
+      <!-- jQuery is required for this example. -->
+      <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+      <script>
+        L.mapbox.accessToken = 'pk.eyJ1IjoidGFsbGxndXkiLCJhIjoiQU4zdXlIdyJ9.wGkUPqhITuNDLgnb5xNx7Q';
+
+        var map = L.mapbox.map('map', 'mapbox.streets')
+        .setView([39.3073, -76.6406], 12);
+
+
+        var featureLayer = L.mapbox.featureLayer()
+        .loadURL('10D-Highways.geojson')
+        .addTo(map);
+
+        
+
+          // here you call `bindPopup` with a string of HTML you create - the feature
+          // propertis declared above are available under `layer.feature.properties`
+
+
+      </script>
+   </body>
+</html>
