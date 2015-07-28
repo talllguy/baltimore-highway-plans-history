@@ -20,17 +20,37 @@
 
         var map = L.mapbox.map('map', 'mapbox.streets')
         .setView([39.3073, -76.6406], 12);
+        var highwayL;
+        var rampL;
 
+        $.getJSON('10D-RightOfWay.geojson', function(data) {
+          highwayL = L.mapbox.featureLayer(data);
+          highwayL.addTo(map);
+          highwayL.setStyle({
+            stroke: false,
+            fillOpacity: 0.5,
+            fillColor: '#2ca25f'
+          });
+        })
 
-        var featureLayer = L.mapbox.featureLayer()
-        .loadURL('10D-Highways.geojson')
-        .addTo(map);
+        $.getJSON('10D-Ramps.geojson', function(data) {
+          highwayL = L.mapbox.featureLayer(data);
+          highwayL.addTo(map);
+          highwayL.setStyle({
+            color: '#edf8fb',
+            weight: 2
+          });
+        })
 
-        
-
-          // here you call `bindPopup` with a string of HTML you create - the feature
-          // propertis declared above are available under `layer.feature.properties`
-
+        $.getJSON('10D-Highways.geojson', function(data) {
+          highwayL = L.mapbox.featureLayer(data);
+          highwayL.addTo(map);
+          highwayL.setStyle({
+            color: '#b2e2e2',
+            weight: 4,
+            stroke: true
+          });
+        })
 
       </script>
    </body>
