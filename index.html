@@ -4,8 +4,8 @@
       <meta charset=utf-8 />
       <title>Baltimore Highway History</title>
       <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-      <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
-      <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+      <link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+      <script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
       <style>
          body { margin:0; padding:0; }
          #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -13,44 +13,73 @@
    </head>
    <body>
       <div id='map'></div>
-      <!-- jQuery is required for this example. -->
-      <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
       <script>
-        L.mapbox.accessToken = 'pk.eyJ1IjoidGFsbGxndXkiLCJhIjoiQU4zdXlIdyJ9.wGkUPqhITuNDLgnb5xNx7Q';
+		mapboxgl.accessToken = 'pk.eyJ1IjoidGFsbGxndXkiLCJhIjoiQU4zdXlIdyJ9.wGkUPqhITuNDLgnb5xNx7Q';
 
-        var map = L.mapbox.map('map', 'mapbox.streets')
-        .setView([39.3073, -76.6406], 12);
-        var highwayL;
-        var rampL;
+		const map = new mapboxgl.Map({
+			container: 'map', // container ID
+			style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+			zoom: 12, // starting zoom
+			center: [-76.6406, 39.3073] // starting center
+		});
+		
+		map.addControl(new mapboxgl.NavigationControl());
 
-        $.getJSON('10D-RightOfWay.geojson', function(data) {
-          highwayL = L.mapbox.featureLayer(data);
-          highwayL.addTo(map);
-          highwayL.setStyle({
-            stroke: false,
-            fillOpacity: 0.5,
-            fillColor: '#2ca25f'
-          });
-        })
-
-        $.getJSON('10D-Ramps.geojson', function(data) {
-          highwayL = L.mapbox.featureLayer(data);
-          highwayL.addTo(map);
-          highwayL.setStyle({
-            color: '#edf8fb',
-            weight: 2
-          });
-        })
-
-        $.getJSON('10D-Highways.geojson', function(data) {
-          highwayL = L.mapbox.featureLayer(data);
-          highwayL.addTo(map);
-          highwayL.setStyle({
-            color: '#b2e2e2',
-            weight: 4,
-            stroke: true
-          });
-        })
+			map.on('load', () => {
+			map.addSource('10D-RightOfWay', {
+				type: 'geojson',
+				// Use a URL for the value for the `data` property.
+				data: 'https://raw.githubusercontent.com/talllguy/baltimore-highway-plans-history/master/10D-RightOfWay.geojson'
+			});
+			
+			map.addSource('10D-Ramps', {
+				type: 'geojson',
+				// Use a URL for the value for the `data` property.
+				data: 'https://raw.githubusercontent.com/talllguy/baltimore-highway-plans-history/master/10D-Ramps.geojson'
+			});
+			
+			map.addSource('10D-Highways', {
+				type: 'geojson',
+				// Use a URL for the value for the `data` property.
+				data: 'https://raw.githubusercontent.com/talllguy/baltimore-highway-plans-history/master/10D-Highways.geojson'
+			});
+			
+			map.addLayer({
+				'id': '10D-RightOfWay-layer',
+				'type': 'fill',
+				'source': '10D-RightOfWay',
+				'paint': {
+					'fill-color': '#66ca6d',
+					'fill-outline-color': '#28502b',
+					'fill-opacity': 0.6
+				}
+			});
+			
+			map.addLayer({
+				'id': '10D-Ramps-layer',
+				'type': 'line',
+				'source': '10D-Ramps',
+				'paint': {
+					'line-color': '#FA8072',
+					'line-width': 4,
+					'line-opacity': 0.7
+				}
+			});
+			
+			map.addLayer({
+				'id': '10D-Highways-layer',
+				'type': 'line',
+				'source': '10D-Highways',
+				'paint': {
+					'line-color': '#d62d20',
+					'line-width': 7,
+					'line-opacity': 0.9,
+					'line-blur': 1
+				}
+			});
+			
+		});
+		
 
       </script>
    </body>

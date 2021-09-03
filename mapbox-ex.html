@@ -1,0 +1,59 @@
+
+All docsMapbox GL JSExamplesLoad data from an external GeoJSON file
+Load data from an external GeoJSON file
+This example adds GeoJSON data from an external file and uses it in a layer on the map.
+
+Upon loading the map, it uses addSource to add the GeoJSONSource to the map, using a URL string as the value for data. Then it uses addLayer to create a circle layer that references the source.
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Load data from an external GeoJSON file</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+ 
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+	mapboxgl.accessToken = 'pk.eyJ1IjoidGFsbGxndXkiLCJhIjoiQU4zdXlIdyJ9.wGkUPqhITuNDLgnb5xNx7Q';
+const map = new mapboxgl.Map({
+container: 'map', // container ID
+style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+zoom: 7, // starting zoom
+center: [138.043, 35.201] // starting center
+});
+ 
+map.on('load', () => {
+map.addSource('earthquakes', {
+type: 'geojson',
+// Use a URL for the value for the `data` property.
+data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+});
+ 
+map.addLayer({
+'id': 'earthquakes-layer',
+'type': 'circle',
+'source': 'earthquakes',
+'paint': {
+'circle-radius': 8,
+'circle-stroke-width': 2,
+'circle-color': 'red',
+'circle-stroke-color': 'white'
+}
+});
+});
+</script>
+ 
+</body>
+</html>
